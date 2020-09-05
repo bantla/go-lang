@@ -1,4 +1,4 @@
-// Package dbconn defines functions that access database
+// Package dbconn (database connection) defines functions that access database
 package dbconn
 
 import (

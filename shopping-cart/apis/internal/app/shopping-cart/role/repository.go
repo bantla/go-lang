@@ -7,19 +7,19 @@ import (
 	"gorm.io/gorm"
 )
 
-// roleRepository is a specific implementation of the role repository constract
-type roleRepository struct {
+// Repository is a specific implementation of the role repository constract
+type Repository struct {
 	// Database gorm
 	db *gorm.DB
 }
 
-// newRepository method creates an instance of the role repository constract
-func newRepository(db *gorm.DB) roleRepository {
-	return roleRepository{db}
+// NewRepository method creates an instance of the role repository constract
+func NewRepository(db *gorm.DB) Repository {
+	return Repository{db}
 }
 
 // FindAll method returns all roles in store
-func (r roleRepository) FindAll(roles *[]*model.Role) error {
+func (r Repository) FindAll(roles *[]*model.Role) error {
 	db := r.db.Find(roles)
 	return db.Error
 }

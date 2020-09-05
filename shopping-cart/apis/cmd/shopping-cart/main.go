@@ -4,7 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bantla/internal/app/shopping-cart/role"
+	"github.com/bantla/internal/app/shopping-cart/constant"
+	roleV1 "github.com/bantla/internal/app/shopping-cart/role/v1"
 	"github.com/bantla/migration"
 	"github.com/bantla/pkg/dbconn"
 	"github.com/labstack/echo"
@@ -35,6 +36,10 @@ func main() {
 			return next(ctx)
 		}
 	})
-	role.RegisterRoute(e)
-	e.Logger.Fatal(e.Start(":4200"))
+
+	// Register routes of API version 1
+	roleV1.RegisterRoute(e.Group(constant.PathV1))
+
+	// Run app
+	e.Logger.Fatal(e.Start("127.0.0.1:8080"))
 }
