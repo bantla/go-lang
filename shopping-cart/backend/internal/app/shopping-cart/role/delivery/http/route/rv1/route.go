@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/bantla/internal/app/shopping-cart/constants"
 	"github.com/bantla/internal/app/shopping-cart/domain/model"
-	"github.com/bantla/internal/app/shopping-cart/role"
 	"github.com/bantla/internal/app/shopping-cart/role/service/sv1"
 	"github.com/labstack/echo"
 	"gorm.io/gorm"
@@ -18,7 +18,7 @@ func RegisterRoute(e *echo.Group) {
 		return ctx.String(http.StatusOK, "api/v1")
 	})
 
-	e.GET(role.Path, welcome)
+	e.GET(constants.RolePath, welcome)
 	// Override
 	// e.GET(role.Path, func(ctx echo.Context) error {
 	// 	return ctx.String(http.StatusOK, "Override path")

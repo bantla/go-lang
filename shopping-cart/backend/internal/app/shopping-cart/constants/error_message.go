@@ -1,4 +1,5 @@
-package constant
+// Package constants defines constants as route path, message ...
+package constants
 
 const (
 	// DatabaseConnectionFailed error message

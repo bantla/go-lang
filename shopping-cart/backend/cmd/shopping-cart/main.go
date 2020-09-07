@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/bantla/internal/app/shopping-cart/constant"
-	roleRV1 "github.com/bantla/internal/app/shopping-cart/role/delivery/http/route/rv1"
+	"github.com/bantla/internal/app/shopping-cart/constants"
+	"github.com/bantla/internal/app/shopping-cart/route"
 	"github.com/bantla/migration"
 	"github.com/bantla/pkg/database"
 	"github.com/bantla/pkg/errors"
@@ -18,26 +18,26 @@ func main() {
 	db, err := database.ConnectMySQL(dsn)
 
 	if err != nil {
-		errors.HandleError(errors.New(constant.DatabaseConnectionFailed))
+		errors.HandleError(errors.New(constants.DatabaseConnectionFailed))
 	}
 
 	ctx := context.Background()
 
 	if err := migration.AutoMigrate(ctx, db); err != nil {
-		errors.HandleError(errors.New(constant.AutomaticDatabaseMigrationFailed))
+		errors.HandleError(errors.New(constants.AutomaticDatabaseMigrationFailed))
 	}
 
 	// Create echo instance
 	e := echo.New()
 
-	// Customize echo
+	// Customize HTTPErrorHandler echo
 	e.HTTPErrorHandler = errors.NewHTTPErrorHandler()
 
-	// Add middlewares
+	// Add global middlewares
 	e.Use(middleware.WithDB(db))
 
-	// Register routes of API version 1
-	roleRV1.RegisterRoute(e.Group(constant.PathV1))
+	// Register routes
+	route.Register(e)
 
 	// Start server
 	e.Logger.Fatal(e.Start("127.0.0.1:8080"))
