@@ -36,9 +36,9 @@ func welcome(ctx echo.Context) error {
 		// }
 		// result := db.Create(&role)
 		// fmt.Println(result)
-		service := sv1.InitializeRoleService(db)
+		roleService := sv1.InitializeRoleService(db)
 		roles := []*model.Role{}
-		err := service.FindAll(&roles)
+		err := roleService.FindAll(&roles)
 
 		if err != nil {
 			fmt.Println(err)

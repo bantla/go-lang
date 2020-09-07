@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/bantla/internal/app/shopping-cart/constant"
-	roleRouteV1 "github.com/bantla/internal/app/shopping-cart/role/delivery/http/route/rv1"
+	roleRV1 "github.com/bantla/internal/app/shopping-cart/role/delivery/http/route/rv1"
 	"github.com/bantla/migration"
 	"github.com/bantla/pkg/database"
+	"github.com/bantla/pkg/errors"
+	"github.com/bantla/pkg/middleware"
 	"github.com/labstack/echo"
 )
 
@@ -17,29 +18,27 @@ func main() {
 	db, err := database.ConnectMySQL(dsn)
 
 	if err != nil {
-		fmt.Println(err, "So failed")
-		return
+		errors.HandleError(errors.New(constant.DatabaseConnectionFailed))
 	}
 
 	ctx := context.Background()
 
 	if err := migration.AutoMigrate(ctx, db); err != nil {
-		fmt.Println(err)
-		return
+		errors.HandleError(errors.New(constant.AutomaticDatabaseMigrationFailed))
 	}
 
+	// Create echo instance
 	e := echo.New()
-	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(ctx echo.Context) error {
-			ctx.Set("DB", db)
 
-			return next(ctx)
-		}
-	})
+	// Customize echo
+	e.HTTPErrorHandler = errors.NewHTTPErrorHandler()
+
+	// Add middlewares
+	e.Use(middleware.WithDB(db))
 
 	// Register routes of API version 1
-	roleRouteV1.RegisterRoute(e.Group(constant.PathV1))
+	roleRV1.RegisterRoute(e.Group(constant.PathV1))
 
-	// Run server
+	// Start server
 	e.Logger.Fatal(e.Start("127.0.0.1:8080"))
 }
