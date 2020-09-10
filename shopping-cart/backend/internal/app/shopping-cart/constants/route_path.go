@@ -1,12 +1,12 @@
 package constants
 
 const (
-	// PrefixAPI is prefix APIs
-	PrefixAPI = "/api"
+	// PathPrefix is prefix APIs
+	PathPrefix = "/api"
 
-	// PathV1 is the path of API version 1
+	// PathV1 is the route path of API version 1
 	PathV1 = "/v1"
 
-	// RolePath is the route path of role feature
-	RolePath = "/roles"
+	// PathRole is the route path of role feature
+	PathRole = "/roles"
 )

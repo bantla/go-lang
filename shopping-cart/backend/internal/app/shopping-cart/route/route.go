@@ -9,5 +9,5 @@ import (
 
 // Register function register all routes
 func Register(e *echo.Echo) {
-	rv1.RegisterRoute(e.Group(constants.PrefixAPI + constants.PathV1))
+	rv1.RegisterRoute(e.Group(constants.PathPrefix + constants.PathV1))
 }

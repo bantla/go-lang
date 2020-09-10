@@ -2,9 +2,15 @@
 package constants
 
 const (
-	// DatabaseConnectionFailed error message
-	DatabaseConnectionFailed = "Database connection failed!"
+	// MessageErrorDatabaseConnectionFailed error message
+	MessageErrorDatabaseConnectionFailed = "Database connection failed"
 
-	// AutomaticDatabaseMigrationFailed error message
-	AutomaticDatabaseMigrationFailed = "Automatic database migration failed!"
+	// MessageErrorAutomaticDatabaseMigrationFailed error message
+	MessageErrorAutomaticDatabaseMigrationFailed = "Automatic database migration failed"
+
+	// MessageStatusInternalServerError error message
+	MessageStatusInternalServerError = "Internal server error"
+
+	// MessageErrorCheckIfUsingWithDBMiddleware is used when using the echo request context to obtain the db connection
+	MessageErrorCheckIfUsingWithDBMiddleware = "Check if using WithDB middleware"
 )

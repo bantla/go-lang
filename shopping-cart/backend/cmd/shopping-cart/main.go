@@ -18,20 +18,20 @@ func main() {
 	db, err := database.ConnectMySQL(dsn)
 
 	if err != nil {
-		errors.HandleError(errors.New(constants.DatabaseConnectionFailed))
+		errors.HandleError(errors.New(constants.MessageErrorDatabaseConnectionFailed))
 	}
 
 	ctx := context.Background()
 
 	if err := migration.AutoMigrate(ctx, db); err != nil {
-		errors.HandleError(errors.New(constants.AutomaticDatabaseMigrationFailed))
+		errors.HandleError(errors.New(constants.MessageErrorAutomaticDatabaseMigrationFailed))
 	}
 
 	// Create echo instance
 	e := echo.New()
 
 	// Customize HTTPErrorHandler echo
-	e.HTTPErrorHandler = errors.NewHTTPErrorHandler()
+	errors.HTTPErrorHandler(e)
 
 	// Add global middlewares
 	e.Use(middleware.WithDB(db))
