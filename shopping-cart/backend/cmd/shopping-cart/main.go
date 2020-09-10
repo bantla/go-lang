@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 
-	"github.com/bantla/internal/app/shopping-cart/constants"
 	"github.com/bantla/internal/app/shopping-cart/route"
 	"github.com/bantla/migration"
+	"github.com/bantla/pkg/configuration"
 	"github.com/bantla/pkg/database"
 	"github.com/bantla/pkg/errors"
 	"github.com/bantla/pkg/middleware"
@@ -13,18 +13,29 @@ import (
 )
 
 func main() {
-	// TODO: Data source name should be obtained from the configuration
-	dsn := "root:root-admin@(127.0.0.1:3306)/shopping_cart?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := database.ConnectMySQL(dsn)
+	// TODO: Should check env: dev or prod
+	config, err := configuration.New("shopping_cart_dev", "config")
 
 	if err != nil {
-		errors.HandleError(errors.New(constants.MessageErrorDatabaseConnectionFailed))
+		// Debug: path should be ../../config
+		if config, err = configuration.New("shopping_cart_dev", "../../config"); err != nil {
+			errors.HandleError(err)
+			return
+		}
+	}
+
+	db, err := database.ConnectMySQL(config.Database.GetConnectionURI())
+
+	if err != nil {
+		errors.HandleError(err)
+		return
 	}
 
 	ctx := context.Background()
 
 	if err := migration.AutoMigrate(ctx, db); err != nil {
-		errors.HandleError(errors.New(constants.MessageErrorAutomaticDatabaseMigrationFailed))
+		errors.HandleError(err)
+		return
 	}
 
 	// Create echo instance
@@ -40,5 +51,5 @@ func main() {
 	route.Register(e)
 
 	// Start server
-	e.Logger.Fatal(e.Start("127.0.0.1:8080"))
+	e.Logger.Fatal(e.Start(config.Server.GetAddress()))
 }

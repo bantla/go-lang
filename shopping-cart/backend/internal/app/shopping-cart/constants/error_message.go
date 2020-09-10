@@ -5,6 +5,9 @@ const (
 	// MessageErrorDatabaseConnectionFailed error message
 	MessageErrorDatabaseConnectionFailed = "Database connection failed"
 
+	// MessageErrorReadConfigFailed error message
+	MessageErrorReadConfigFailed = "Read config failed"
+
 	// MessageErrorAutomaticDatabaseMigrationFailed error message
 	MessageErrorAutomaticDatabaseMigrationFailed = "Automatic database migration failed"
 
