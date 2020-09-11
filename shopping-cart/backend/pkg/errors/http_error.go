@@ -2,11 +2,11 @@ package errors
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/labstack/echo"
-	"github.com/labstack/gommon/log"
+	"github.com/labstack/echo/v4"
 )
 
 // HTTPError defines struct of Http Error
@@ -65,7 +65,7 @@ func HTTPErrorHandler(e *echo.Echo) {
 		// TODO: Generate unique tracking id, then store tracking id,
 		// error stack, API endpoint, request method in database or log files: log.Output
 		HandleError(err)
-		log.Error(fmt.Sprintf("Tracking ID: %v", trackingID))
+		log.Println(fmt.Sprintf("Tracking ID: %v", trackingID))
 
 		if he, ok := err.(*HTTPError); ok {
 			// Create status code

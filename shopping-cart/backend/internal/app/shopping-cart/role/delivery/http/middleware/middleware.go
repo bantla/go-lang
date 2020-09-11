@@ -9,7 +9,7 @@ import (
 	"github.com/bantla/internal/app/shopping-cart/domain/model"
 	"github.com/bantla/internal/app/shopping-cart/role/service/sv1"
 	"github.com/bantla/pkg/errors"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
