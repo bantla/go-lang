@@ -82,6 +82,13 @@ func HTTPErrorHandler(e *echo.Echo) {
 			} else if e.Debug && err != nil {
 				msg = err.Error()
 			}
+		} else if heEcho, ok := err.(*echo.HTTPError); ok {
+			status = heEcho.Code
+			if heMsg, ok := heEcho.Message.(string); ok {
+				msg = heMsg
+			} else {
+				msg = http.StatusText(status)
+			}
 		}
 
 		// Send response
