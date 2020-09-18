@@ -19,7 +19,7 @@ func NewRoleRepository(db *gorm.DB) RoleRepository {
 
 // FindAll method returns all roles in store
 func (r RoleRepository) FindAll(roles *[]*model.Role) error {
-	return r.db.Find(roles).Error
+	return r.db.Preload("Permissions").Find(roles).Error
 }
 
 // Create method inserts a role into store

@@ -49,8 +49,8 @@ func (s permissionService) FindAll(permissions *[]*model.Permission) error {
 }
 
 // Create method creates a new permission
-func (s permissionService) Create(permissions *model.Permission) error {
-	return s.permissionRepository.Create(permissions)
+func (s permissionService) Create(permission *model.Permission) error {
+	return s.permissionRepository.Create(permission)
 }
 
 // FindByTitle method retrieves a permission matching a title

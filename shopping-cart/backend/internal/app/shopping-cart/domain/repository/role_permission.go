@@ -11,5 +11,8 @@ type RolePermission interface {
 	Delete(roleID uint, permissionID uint) error
 
 	// The FindByRoleID method retrieves list of role permission matching id of role
-	FindByRoleID(roleID uint) error
+	FindByRoleID(rolePermission *[]*model.RolePermission, roleID uint) error
+
+	// FindRolePermissionByIDs method retrieves a role permission using IDs
+	FindRolePermissionByIDs(rolePermission *model.RolePermission, roleID uint, permissionID uint) error
 }

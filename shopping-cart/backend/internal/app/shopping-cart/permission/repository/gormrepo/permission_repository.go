@@ -19,7 +19,7 @@ func NewPermissionRepository(db *gorm.DB) PermissionRepository {
 
 // FindAll method returns all permissions in store
 func (r PermissionRepository) FindAll(permissions *[]*model.Permission) error {
-	return r.db.Find(permissions).Error
+	return r.db.Preload("Roles").Find(permissions).Error
 }
 
 // Create method inserts a permission into store

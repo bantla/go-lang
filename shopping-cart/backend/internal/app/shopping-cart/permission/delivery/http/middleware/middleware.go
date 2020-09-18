@@ -62,8 +62,8 @@ func CheckDuplicatePermissionTitle(next echo.HandlerFunc) echo.HandlerFunc {
 		var err error
 
 		if permission, ok := ctx.Get(constants.PermissionContextKeyValidPermission).(*model.Permission); ok {
-			if PermissionService, ok := ctx.Get(constants.PermissionContextKeyPermissionService).(sv1.PermissionService); ok {
-				if isDuplicate, err := PermissionService.DuplicateTitle(permission.Title); err != nil {
+			if permissionService, ok := ctx.Get(constants.PermissionContextKeyPermissionService).(sv1.PermissionService); ok {
+				if isDuplicate, err := permissionService.DuplicateTitle(permission.Title); err != nil {
 					return errors.NewHTTPError(
 						http.StatusInternalServerError,
 						nil,
@@ -108,8 +108,8 @@ func CheckDuplicatePermissionSlug(next echo.HandlerFunc) echo.HandlerFunc {
 		var err error
 
 		if permission, ok := ctx.Get(constants.PermissionContextKeyValidPermission).(*model.Permission); ok {
-			if PermissionService, ok := ctx.Get(constants.PermissionContextKeyPermissionService).(sv1.PermissionService); ok {
-				if isDuplicate, err := PermissionService.DuplicateSlug(permission.Slug); err != nil {
+			if permissionService, ok := ctx.Get(constants.PermissionContextKeyPermissionService).(sv1.PermissionService); ok {
+				if isDuplicate, err := permissionService.DuplicateSlug(permission.Slug); err != nil {
 					return &errors.HTTPError{
 						Status:  http.StatusInternalServerError,
 						Message: constants.MessageStatusInternalServerError,

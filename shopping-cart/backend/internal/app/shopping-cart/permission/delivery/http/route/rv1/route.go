@@ -16,10 +16,6 @@ import (
 
 // RegisterRoute function creates the permission route
 func RegisterRoute(e *echo.Group) {
-	e.GET("", func(ctx echo.Context) error {
-		return ctx.String(http.StatusOK, "api/v1")
-	})
-
 	e.GET(
 		constants.PathPermission,
 		getPermissions,

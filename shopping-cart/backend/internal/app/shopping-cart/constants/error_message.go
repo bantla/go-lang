@@ -14,6 +14,9 @@ const (
 	// MessageStatusInternalServerError error message
 	MessageStatusInternalServerError = "Internal server error"
 
+	// MessageStatusBadRequestError error message
+	MessageStatusBadRequestError = "Bad Request"
+
 	// MessageErrorCheckIfUsingWithDBMiddleware is used when using the echo request context to obtain the db connection
 	MessageErrorCheckIfUsingWithDBMiddleware = "Check if using WithDB middleware"
 )

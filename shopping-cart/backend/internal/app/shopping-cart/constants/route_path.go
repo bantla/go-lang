@@ -12,4 +12,7 @@ const (
 
 	// PathPermission is the route path of permission feature
 	PathPermission = "/permissions"
+
+	// PathRolePermission is the route path of permission feature
+	PathRolePermission = "/role-permissions"
 )
