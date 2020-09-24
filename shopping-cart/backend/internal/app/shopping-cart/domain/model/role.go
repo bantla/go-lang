@@ -10,7 +10,7 @@ import (
 // Role defines the role model
 type Role struct {
 	// The unique id to identify the role
-	ID uint `gorm:"primaryKey" validate:"required" json:"id"`
+	ID uint `gorm:"primaryKey" json:"id"`
 
 	// The role title
 	Title string `gorm:"type:varchar(100);unique;not null" validate:"required" json:"title"`

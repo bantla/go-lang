@@ -2,7 +2,6 @@ package errors
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/go-sql-driver/mysql"
@@ -15,7 +14,7 @@ type HTTPError struct {
 	Status int
 
 	// Code is the unique id of error
-	Code *int
+	Code *string
 
 	// Message descripes error details
 	Message string
@@ -36,14 +35,14 @@ func (he *HTTPError) Error() string {
 }
 
 // NewHTTPError function creates an instance of HTTPError
-func NewHTTPError(status int, code *int, message string, err error) *HTTPError {
+func NewHTTPError(status int, code *string, message string, err error) *HTTPError {
 	return &HTTPError{status, code, message, err}
 }
 
 // HTTPErrorResponse defines struct of http error response
 type HTTPErrorResponse struct {
 	// Code is the unique id of error
-	Code *int `json:"code,omitempty"`
+	Code *string `json:"code,omitempty"`
 
 	// Message descripes error details
 	Message string `json:"message"`
@@ -55,58 +54,48 @@ type HTTPErrorResponse struct {
 // HTTPErrorHandler customizes the DefaultHTTPErrorHandler (echo)
 func HTTPErrorHandler(e *echo.Echo) {
 	e.HTTPErrorHandler = func(err error, ctx echo.Context) {
-		var (
-			status = http.StatusInternalServerError
-			msg = http.StatusText(status)
-			code *int
-			trackingID *int
-		)
-
 		// TODO: Generate unique tracking id, then store tracking id,
 		// error stack, API endpoint, request method in database or log files: log.Output
 		HandleError(err)
-		log.Println(fmt.Sprintf("Tracking ID: %v", trackingID))
+		// log.Println(fmt.Sprintf("Tracking ID: %v", trackingID))
 
-		if he, ok := err.(*HTTPError); ok {
-			// Create status code
-			if he.Status != 0 {
-				status = he.Status
-			}
+		// if he, ok := err.(*HTTPError); ok {
+		// 	// Create status code
+		// 	if he.Status != 0 {
+		// 		status = he.Status
+		// 	}
 
-			// Create error code
-			code = he.Code
+		// 	// Create error code
+		// 	code = he.Code
 
-			// Create error message
-			if he.Message != "" {
-				msg = he.Message
-			} else if e.Debug && err != nil {
-				msg = err.Error()
-			}
-		} else if heEcho, ok := err.(*echo.HTTPError); ok {
-			status = heEcho.Code
-			if heMsg, ok := heEcho.Message.(string); ok {
-				msg = heMsg
-			} else {
-				msg = http.StatusText(status)
-			}
-		}
+		// 	// Create error message
+		// 	if he.Message != "" {
+		// 		msg = he.Message
+		// 	} else if e.Debug && err != nil {
+		// 		msg = err.Error()
+		// 	}
+		// } else if heEcho, ok := err.(*echo.HTTPError); ok {
+		// 	status = heEcho.Code
+		// 	if heMsg, ok := heEcho.Message.(string); ok {
+		// 		msg = heMsg
+		// 	} else {
+		// 		msg = http.StatusText(status)
+		// 	}
+		// }
 
-		// Send response
-		if !ctx.Response().Committed {
-			if ctx.Request().Method == http.MethodHead {
-				err = ctx.NoContent(status)
-			} else {
-				err = ctx.JSON(status, HTTPErrorResponse{
-					Code: code,
-					Message: msg,
-					TrackingID: trackingID,
-				})
+		if apiErr, ok := err.(*APIError); ok {
+			// Send response
+			if !ctx.Response().Committed {
+				if ctx.Request().Method == http.MethodHead {
+					err = ctx.NoContent(apiErr.Status)
+				} else {
+					if err := ctx.JSON(apiErr.Status, apiErr); err != nil {
+						e.Logger.Error(err)
+					}
+				}
 			}
-
-			// Log err if any
-			if err != nil {
-				e.Logger.Error(err)
-			}
+		} else {
+			e.DefaultHTTPErrorHandler(err, ctx)
 		}
 	}
 }

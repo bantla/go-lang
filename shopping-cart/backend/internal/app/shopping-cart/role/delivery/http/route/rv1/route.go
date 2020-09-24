@@ -12,13 +12,19 @@ import (
 	"github.com/bantla/internal/app/shopping-cart/role/service/sv1"
 	"github.com/bantla/pkg/errors"
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 // RegisterRoute function creates the role route
-func RegisterRoute(e *echo.Group) {
+func RegisterRoute(e *echo.Group, db *gorm.DB) {
 	e.GET("", func(ctx echo.Context) error {
 		return ctx.String(http.StatusOK, "api/v1")
 	})
+
+	roleService := sv1.InitializeRoleService(db)
+	roleHandler := newRoleHandler(roleService)
+
+	e.GET("", roleHandler.getRoles)
 
 	e.GET(
 		constants.PathRole,

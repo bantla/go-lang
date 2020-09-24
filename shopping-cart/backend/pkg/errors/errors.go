@@ -2,7 +2,7 @@
 package errors
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/gommon/log"
@@ -10,13 +10,17 @@ import (
 
 // New function creates an instance of error
 func New(msg string) error {
-	return errors.New(msg)
+	return fmt.Errorf(msg)
 }
 
 // HandleError function prints errors and exits program
 // TODO: Break down errors into more types,
 // creating error handlers for each (Using type assertion to check error type)
 func HandleError(err error) {
+	if apiErr, ok := err.(*APIError); ok {
+		log.Error(apiErr.Unwrap())
+	}
+
 	log.Error(err)
 }
 

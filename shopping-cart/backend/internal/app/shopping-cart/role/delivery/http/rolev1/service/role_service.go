@@ -1,5 +1,5 @@
-// Package sv1 (service version 1) implements use cases of role - API version 1
-package sv1
+// Package service implements use cases of role feature
+package service
 
 import (
 	"errors"
@@ -39,38 +39,38 @@ type roleService struct {
 }
 
 // newRoleService function returns an instance of RoleService
-func newRoleService(r repository.Role) roleService {
-	return roleService{roleRepository: r}
+func newRoleService(roleRepository repository.Role) roleService {
+	return roleService{roleRepository}
 }
 
 // FindAll method gets all roles in store
-func (s roleService) FindAll(roles *[]*model.Role) error {
-	return s.roleRepository.FindAll(roles)
+func (rs roleService) FindAll(roles *[]*model.Role) error {
+	return rs.roleRepository.FindAll(roles)
 }
 
 // Create method creates a new role
-func (s roleService) Create(roles *model.Role) error {
-	return s.roleRepository.Create(roles)
+func (rs roleService) Create(roles *model.Role) error {
+	return rs.roleRepository.Create(roles)
 }
 
 // FindByTitle method retrieves a role matching a title
-func (s roleService) FindByTitle(role *model.Role, title string) error {
-	return s.roleRepository.FindByTitle(role, title)
+func (rs roleService) FindByTitle(role *model.Role, title string) error {
+	return rs.roleRepository.FindByTitle(role, title)
 }
 
 // FindByTitle method retrieves a role matching a slug
-func (s roleService) FindBySlug(role *model.Role, slug string) error {
-	return s.roleRepository.FindBySlug(role, slug)
+func (rs roleService) FindBySlug(role *model.Role, slug string) error {
+	return rs.roleRepository.FindBySlug(role, slug)
 }
 
 // FindByFields method retrieves a role matching role field values
-func (s roleService) FindByFields(role *model.Role, roleMatching model.Role) error {
-	return s.roleRepository.FindByFields(role, roleMatching)
+func (rs roleService) FindByFields(role *model.Role, roleMatching model.Role) error {
+	return rs.roleRepository.FindByFields(role, roleMatching)
 }
 
 // IsDuplicateTitle method checks whether or not the role title exists
-func (s roleService) IsDuplicateTitle(title string) (bool, error) {
-	err := s.roleRepository.FindByFields(&model.Role{}, model.Role{
+func (rs roleService) IsDuplicateTitle(title string) (bool, error) {
+	err := rs.roleRepository.FindByFields(&model.Role{}, model.Role{
 		Title: title,
 	})
 
@@ -82,8 +82,8 @@ func (s roleService) IsDuplicateTitle(title string) (bool, error) {
 }
 
 // IsDuplicateSlug method checks whether or not the role slug exists
-func (s roleService) IsDuplicateSlug(slug string) (bool, error) {
-	err := s.roleRepository.FindByFields(&model.Role{}, model.Role{
+func (rs roleService) IsDuplicateSlug(slug string) (bool, error) {
+	err := rs.roleRepository.FindByFields(&model.Role{}, model.Role{
 		Slug: slug,
 	})
 

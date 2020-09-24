@@ -11,6 +11,7 @@ import (
 	"github.com/bantla/pkg/database"
 	"github.com/bantla/pkg/errors"
 	"github.com/bantla/pkg/middleware"
+	"github.com/bantla/pkg/validator"
 	"github.com/labstack/echo/v4"
 )
 
@@ -53,15 +54,19 @@ func main() {
 
 	// Create echo instance
 	e := echo.New()
+	e.HideBanner = true
 
-	// Customize HTTPErrorHandler echo
+	// Customize HTTPErrorHandler Echo
 	errors.HTTPErrorHandler(e)
+
+	// Customize validator Echo
+	validator.SetValidator(e)
 
 	// Add global middlewares
 	e.Use(middleware.WithDB(db))
 
 	// Register routes
-	route.Register(e)
+	route.Register(e, db)
 
 	// Start server
 	e.Logger.Fatal(e.Start(config.Server.GetAddress()))

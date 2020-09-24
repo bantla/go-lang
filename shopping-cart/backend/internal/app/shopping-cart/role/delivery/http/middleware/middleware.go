@@ -63,7 +63,7 @@ func CheckDuplicateRoleTitle(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if role, ok := ctx.Get(constants.RoleContextKeyValidRole).(*model.Role); ok {
 			if roleService, ok := ctx.Get(constants.RoleContextKeyRoleService).(sv1.RoleService); ok {
-				if isDuplicate, err := roleService.DuplicateTitle(role.Title); err != nil {
+				if isDuplicate, err := roleService.IsDuplicateTitle(role.Title); err != nil {
 					return errors.NewHTTPError(
 						http.StatusInternalServerError,
 						nil,
@@ -109,7 +109,7 @@ func CheckDuplicateRoleSlug(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if role, ok := ctx.Get(constants.RoleContextKeyValidRole).(*model.Role); ok {
 			if roleService, ok := ctx.Get(constants.RoleContextKeyRoleService).(sv1.RoleService); ok {
-				if isDuplicate, err := roleService.DuplicateSlug(role.Slug); err != nil {
+				if isDuplicate, err := roleService.IsDuplicateSlug(role.Slug); err != nil {
 					return &errors.HTTPError{
 						Status:  http.StatusInternalServerError,
 						Message: constants.MessageStatusInternalServerError,
