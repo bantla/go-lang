@@ -29,6 +29,8 @@ func (cv *Validator) Validate(i interface{}) error {
 			field := tag.GetFieldValueOfJSONTag(i, v.Field())
 			validatorError := &errors.ValidatorError{
 				Code: getErrorCodeByValidatorTag(validatorTag),
+				// TODO: Should use translation to custom validator message
+				// Then: `Message: e.Error()`
 				Message: fmt.Sprintf("Field validation for '%s' failed on the '%s' tag", field, validatorTag),
 				Model: tag.GetStructTypeName(i),
 				Field: field,
@@ -46,6 +48,7 @@ func (cv *Validator) Validate(i interface{}) error {
 
 // SetValidator set custom validator for Echo
 func SetValidator(e *echo.Echo) {
+	// TODO: Add custom validator message e.Validator.validator.Register ...
 	e.Validator = &Validator{
 		validator.New(),
 	}

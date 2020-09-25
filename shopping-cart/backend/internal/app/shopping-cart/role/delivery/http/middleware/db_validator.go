@@ -2,7 +2,7 @@
 package middleware
 
 import (
-	"github.com/bantla/internal/app/shopping-cart/role/delivery/http/rolev1/service"
+	"github.com/bantla/internal/app/shopping-cart/role/service"
 )
 
 // DBValidator define middleware to validate role data in the database

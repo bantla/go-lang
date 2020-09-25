@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/bantla/internal/app/shopping-cart/domain/model"
-	"github.com/bantla/internal/app/shopping-cart/role/delivery/http/rolev1/service"
+	"github.com/bantla/internal/app/shopping-cart/role/service"
 	"github.com/bantla/pkg/errors"
 	"github.com/bantla/pkg/tag"
 	"github.com/labstack/echo/v4"
