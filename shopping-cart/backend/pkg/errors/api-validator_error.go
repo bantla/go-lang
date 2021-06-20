@@ -101,3 +101,21 @@ func NewInvalidBinderDataValidatorError(err error, model string) *ValidatorError
 		nil,
 	}
 }
+
+// NewInvalidFieldValidatorError is used when a ID can't convert to uint
+func NewInvalidFieldValidatorError(
+	err error,
+	model string,
+	field string,
+	rejectedValue interface{},
+) *ValidatorError {
+	message := fmt.Sprintf("ID is invalid '%v'", rejectedValue)
+
+	return &ValidatorError{
+		ErrorCodeValidatorInvalidField,
+		message,
+		model,
+		field,
+		rejectedValue,
+	}
+}

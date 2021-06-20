@@ -46,3 +46,8 @@ func (r RoleRepository) FindBySlug(role *model.Role, slug string) error {
 func (r RoleRepository) FindByFields(role *model.Role, roleMatching model.Role) error {
 	return r.db.Where(roleMatching).First(&role).Error
 }
+
+// Delete method removes a role matching id
+func (r RoleRepository) Delete(id uint) error {
+	return r.db.Delete(&model.Role{}, id).Error
+}

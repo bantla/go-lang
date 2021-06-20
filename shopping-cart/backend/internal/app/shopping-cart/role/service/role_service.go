@@ -31,6 +31,9 @@ type RoleService interface {
 
 	// DuplicateSlug method checks whether or not the role slug exists
 	IsDuplicateSlug(slug string) (bool, error)
+
+	// Delete method removes a role matching id
+	Delete(id uint) (uint, error)
 }
 
 type roleService struct {
@@ -92,4 +95,13 @@ func (rs roleService) IsDuplicateSlug(slug string) (bool, error) {
 	}
 
 	return true, err
+}
+
+// Delete method removes a role matching a id
+func (rs roleService) Delete(id uint) (uint, error) {
+	if err := rs.roleRepository.Delete(id); err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }

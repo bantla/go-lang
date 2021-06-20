@@ -22,4 +22,7 @@ type Role interface {
 
 	// The FindByFields method retrieves a role matching role field values
 	FindByFields(role *model.Role, roleMatching model.Role) error
+
+	// The delete method removes a role matching a id
+	Delete(id uint) error
 }

@@ -1,9 +1,8 @@
-// Package handler package implements handlers of the role route
+// Package handler package implements handlers of the permission route
 package handler
 
 import (
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/bantla/internal/app/shopping-cart/domain/model"
@@ -18,11 +17,8 @@ type RoleHandler interface {
 	// Get method retrives a list of roles
 	Get(ctx echo.Context) error
 
-	// Create method creates a new role
+	// Create method create a new role
 	Create(ctx echo.Context) error
-
-	// Delete method remove a role
-	Delete(ctx echo.Context)
 }
 
 // roleHandler define handlers of role route
@@ -110,24 +106,4 @@ func (rh roleHandler) Create(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, role)
-}
-
-// Delete method remove a role
-func (rh roleHandler) Delete(ctx echo.Context) error {
-	role := &model.Role{}
-	roleModel := tag.GetStructTypeName(role)
-	idStr := ctx.QueryParam("id");
-	roleID, err := strconv.ParseUint(idStr, 0, 64);
-
-	if err != nil {
-		return errors.NewAPIValidatorError(nil, errors.NewInvalidFieldValidatorError(err, roleModel, tag.GetFieldValueOfJSONTag(role, "ID"), idStr))
-	}
-
-	if _, err = rh.roleService.Delete(uint(roleID)); err != nil {
-		return errors.NewAPIUnexpectedError(err)
-	}
-
-	return ctx.JSON(http.StatusOK, &map[string]uint{
-		tag.GetFieldValueOfJSONTag(role, "ID"): uint(roleID),
-	})
 }
