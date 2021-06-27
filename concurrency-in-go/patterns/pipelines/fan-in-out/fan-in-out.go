@@ -46,6 +46,14 @@ func fanIn(done <-chan interface{}, ins ...<-chan interface{}) <-chan interface{
 	output := func(in <-chan interface{}) {
 		defer wg.Done()
 
+		/**
+		Using the or done channel and the for range to replace the for loop code at line 57
+			Example:
+				for v := range orDone(done, in) {
+					multiplex <- v
+				}
+		*/
+
 		for {
 			select {
 			case <-done:

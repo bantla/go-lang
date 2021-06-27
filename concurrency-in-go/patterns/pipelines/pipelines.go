@@ -70,6 +70,14 @@ func multiply(done <-chan interface{}, numChan <-chan int, multiplier int) <-cha
 			}
 		} */
 
+		/**
+		Using the or done channel and the for range to replace the for loop code at line 81
+			Example:
+				for v := range orDone(done, numChan) {
+					ch <- v * multiplier
+				}
+		*/
+
 		// Here uses "for loop" to multiply a number to emitted value "numChan"
 		for {
 			select {
