@@ -6,6 +6,7 @@
   - tee channel.
 - Race detector.
 - Option function.
+- Sync pool.
 
 ## Tech stack
 - Go 1.14
